@@ -133,7 +133,7 @@ in {
 
       package = mkOption {
         type = types.package;
-        default = pkgs.neovim-unwrapped;
+        default = pkgs.unstable.neovim-unwrapped;
         defaultText = literalExample "pkgs.neovim-unwrapped";
         description = "The package to use for the neovim binary.";
       };
@@ -222,7 +222,7 @@ in {
   };
 
   config = let
-    neovimConfig = pkgs.neovimUtils.makeNeovimConfig {
+    neovimConfig = pkgs.unstable.neovimUtils.makeNeovimConfig {
       inherit (cfg)
         extraPython3Packages withPython3 withNodeJs withRuby viAlias vimAlias;
       configure = cfg.configure // moduleConfigure;
@@ -243,7 +243,7 @@ in {
     home.packages = [ cfg.finalPackage ];
 
     xdg.configFile."nvim/init.vim".text = neovimConfig.neovimRcContent;
-    programs.neovim.finalPackage = pkgs.wrapNeovimUnstable cfg.package
+    programs.neovim.finalPackage = pkgs.unstable.wrapNeovimUnstable cfg.package
       (neovimConfig // {
         wrapperArgs = (lib.escapeShellArgs neovimConfig.wrapperArgs) + " "
           + extraMakeWrapperArgs;
